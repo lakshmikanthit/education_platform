@@ -18,9 +18,9 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # Authentication Settings
-LOGIN_URL = 'users:login'  # Point to our custom login view
-LOGIN_REDIRECT_URL = 'home'  # After login, redirect to home
-LOGOUT_REDIRECT_URL = 'users:login'  # After logout, redirect to login
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'courses'  # Redirect to courses page after login
+LOGOUT_REDIRECT_URL = 'users:login'  # Redirect to login page after logout
 
 # Database Configuration
 DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')

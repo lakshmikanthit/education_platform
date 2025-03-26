@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: education-platform
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn education_platform.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: education_platform_db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+
+databases:
+  - name: education_platform_db
+    databaseName: education_platform
+    user: education_platform 
