@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block title %}Available Courses{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    .floating-shapes {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 15s infinite;
+    }
+
+    .shape:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        left: 10%;
+    }
+
+    .shape:nth-child(2) {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        right: 15%;
+    }
+
+    .shape:nth-child(3) {
+        width: 80px;
+        height: 80px;
+        bottom: 20%;
+        left: 20%;
+    }
+
+    @keyframes float {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(20px, 20px) rotate(180deg); }
+        100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    .main-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        color: white;
+        border: none;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .course-card {
+        background: white;
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-image {
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .course-card:hover .course-image {
+        transform: scale(1.05);
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(to right, #00f2fe, #4facfe);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+    }
+
+    .btn-add-course {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-add-course:hover {
+        background: linear-gradient(to right, #00f2fe, #4facfe);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        color: white;
+    }
+
+    .badge {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .badge.bg-info {
+        background: linear-gradient(to right, #4facfe, #00f2fe) !important;
+    }
+
+    .instructor-tag {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #4facfe;
+        margin-bottom: 1rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+</style>
+
+<div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+
+<div class="container">
+    <div class="main-card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="page-title mb-0">Available Courses</h1>
+                {% if user.is_staff %}
+                <a href="{% url 'admin:education_access_course_add' %}" class="btn-add-course">
+                    <i class="fas fa-plus-circle"></i> Add New Course
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card-body">
+            {% if courses %}
+            <div class="row g-4">
+                {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="course-card">
+                        <div style="overflow: hidden;">
+                            <img src="https://source.unsplash.com/random/400x300/?{{ course.title|urlencode }}" 
+                                 class="course-image w-100" alt="{{ course.title }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold mb-3">{{ course.title }}</h5>
+                            <p class="card-text text-muted mb-3">{{ course.description|truncatewords:20 }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-info">{{ course.duration }} weeks</span>
+                                <span class="instructor-tag">
+                                    <i class="fas fa-user-tie"></i>
+                                    {{ course.instructor }}
+                                </span>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">
+                                    <i class="fas fa-book-open me-2"></i> View Course
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-graduation-cap mb-3"></i>
+                <h3>No courses available yet</h3>
+                <p class="text-muted mb-4">We're working on adding exciting new courses. Please check back soon!</p>
+                {% if user.is_staff %}
+                <a href="{% url 'admin:education_access_course_add' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i> Add First Course
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

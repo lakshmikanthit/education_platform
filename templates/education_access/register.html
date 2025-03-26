@@ -1,0 +1,482 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Account | Education Platform{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+    }
+    
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    .register-container {
+        max-width: 450px;
+        margin: 40px auto;
+        position: relative;
+        perspective: 1000px;
+    }
+    
+    .register-box {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease, box-shadow 0.6s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .register-box:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 15px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .register-header {
+        background: linear-gradient(120deg, #3498db, #9b59b6);
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .register-header::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(120deg, #3498db, #9b59b6);
+        z-index: -1;
+        transform: skewY(-7deg);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .register-header h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .register-header p {
+        margin: 5px 0 0;
+        font-size: 16px;
+        opacity: 0.9;
+    }
+    
+    .register-body {
+        padding: 30px;
+    }
+    
+    .register-field {
+        margin-bottom: 25px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .register-field label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+        font-size: 14px;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+    
+    .register-field input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e1e1e1;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .register-field input:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        outline: none;
+    }
+    
+    .register-field input:focus + .input-icon {
+        color: #3498db;
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 65%;
+        transform: translateY(-50%);
+        color: #888;
+        transition: all 0.3s ease;
+    }
+    
+    .register-button {
+        background: linear-gradient(to right, #3498db, #9b59b6);
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+    }
+    
+    .register-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: all 0.6s ease;
+    }
+    
+    .register-button:hover {
+        background: linear-gradient(to right, #9b59b6, #3498db);
+        box-shadow: 0 7px 20px rgba(52, 152, 219, 0.6);
+        transform: translateY(-2px);
+    }
+    
+    .register-button:hover::before {
+        left: 100%;
+    }
+    
+    .register-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 3px 10px rgba(52, 152, 219, 0.4);
+    }
+    
+    .register-footer {
+        background-color: rgba(245, 245, 245, 0.7);
+        padding: 20px;
+        text-align: center;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .login-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .login-link::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: #3498db;
+        transform: scaleX(0);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease;
+    }
+    
+    .login-link:hover {
+        color: #9b59b6;
+    }
+    
+    .login-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+    
+    .home-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 10px 20px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+    
+    .home-link:hover {
+        background: rgba(0, 0, 0, 0.3);
+        transform: translateY(-3px);
+    }
+    
+    .errorlist {
+        color: #e74c3c;
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    @keyframes shake {
+        10%, 90% {
+            transform: translateX(-1px);
+        }
+        20%, 80% {
+            transform: translateX(2px);
+        }
+        30%, 50%, 70% {
+            transform: translateX(-4px);
+        }
+        40%, 60% {
+            transform: translateX(4px);
+        }
+    }
+    
+    .floating-shapes div {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(1px);
+        border-radius: 50%;
+        animation: float 10s linear infinite;
+    }
+    
+    .floating-shapes div:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        left: 10%;
+        top: 20%;
+        animation-delay: 0s;
+        animation-duration: 15s;
+    }
+    
+    .floating-shapes div:nth-child(2) {
+        width: 60px;
+        height: 60px;
+        left: 30%;
+        top: 70%;
+        animation-delay: 2s;
+        animation-duration: 18s;
+    }
+    
+    .floating-shapes div:nth-child(3) {
+        width: 40px;
+        height: 40px;
+        right: 20%;
+        top: 30%;
+        animation-delay: 4s;
+        animation-duration: 12s;
+    }
+    
+    .floating-shapes div:nth-child(4) {
+        width: 100px;
+        height: 100px;
+        right: 10%;
+        bottom: 10%;
+        animation-delay: 6s;
+        animation-duration: 20s;
+    }
+    
+    @keyframes float {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translateY(-60px) rotate(180deg);
+            opacity: 0.4;
+        }
+        100% {
+            transform: translateY(0) rotate(360deg);
+            opacity: 0.8;
+        }
+    }
+    
+    .form-text {
+        font-size: 12px;
+        margin-top: 5px;
+        color: #6c757d;
+    }
+    
+    @media (max-width: 576px) {
+        .register-container {
+            margin: 20px 15px;
+        }
+        
+        .register-header h2 {
+            font-size: 24px;
+        }
+        
+        .register-body {
+            padding: 20px;
+        }
+    }
+</style>
+
+<!-- Floating background shapes -->
+<div class="floating-shapes">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+
+<div class="register-container">
+    <div class="register-box">
+        <div class="register-header">
+            <h2>Create Account</h2>
+            <p>Join our platform to start your learning journey</p>
+                </div>
+        
+        <div class="register-body">
+                    {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                            {{ message }}
+                    <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';">&times;</button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+            <form method="post" id="registerForm">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="register-field" data-index="{{ forloop.counter0 }}">
+                    <label for="{{ field.id_for_label }}">
+                        {% if 'username' in field.name %}
+                            <i class="bi bi-person-badge me-1"></i>
+                        {% elif 'email' in field.name %}
+                            <i class="bi bi-envelope me-1"></i>
+                        {% elif 'password' in field.name %}
+                            <i class="bi bi-lock me-1"></i>
+                        {% else %}
+                            <i class="bi bi-card-text me-1"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+                    
+                    {{ field.errors }}
+                    
+                    {% if 'password' in field.name %}
+                    <div class="input-wrapper" style="position: relative;">
+                        <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Enter your {{ field.label|lower }}" {% if field.field.required %}required{% endif %}>
+                        <i class="bi bi-lock-fill input-icon"></i>
+                    </div>
+                    {% else %}
+                    <div class="input-wrapper" style="position: relative;">
+                        <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Enter your {{ field.label|lower }}" {% if field.field.required %}required{% endif %}>
+                        {% if 'username' in field.name %}
+                            <i class="bi bi-person-fill input-icon"></i>
+                        {% elif 'email' in field.name %}
+                            <i class="bi bi-envelope-fill input-icon"></i>
+                        {% else %}
+                            <i class="bi bi-card-text input-icon"></i>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <button type="submit" class="register-button">
+                    <i class="bi bi-person-plus-fill me-2"></i>Create Account
+                </button>
+            </form>
+            </div>
+        
+        <div class="register-footer">
+            <p>Already have an account? <a href="{% url 'login' %}" class="login-link">Sign In</a></p>
+        </div>
+    </div>
+    
+    <div style="text-align: center;">
+        <a href="{% url 'home' %}" class="home-link">
+            <i class="bi bi-arrow-left me-2"></i>Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Style error lists
+        const errorLists = document.querySelectorAll('.errorlist');
+        errorLists.forEach(list => {
+            list.classList.add('text-danger', 'mb-2', 'ps-0');
+        });
+        
+        // Add animation classes to elements
+        const registerBox = document.querySelector('.register-box');
+        const registerFields = document.querySelectorAll('.register-field');
+        const registerButton = document.querySelector('.register-button');
+        
+        // Subtle entrance animations
+        registerBox.style.opacity = '0';
+        registerBox.style.transform = 'translateY(20px)';
+        
+        registerFields.forEach((field, index) => {
+            field.style.opacity = '0';
+            field.style.transform = 'translateY(20px)';
+        });
+        
+        registerButton.style.opacity = '0';
+        
+        // Trigger animations after a small delay
+        setTimeout(() => {
+            registerBox.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            registerBox.style.opacity = '1';
+            registerBox.style.transform = 'translateY(0)';
+            
+            registerFields.forEach((field, index) => {
+                setTimeout(() => {
+                    field.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    field.style.opacity = '1';
+                    field.style.transform = 'translateY(0)';
+                }, 200 + (index * 100));
+            });
+            
+            setTimeout(() => {
+                registerButton.style.transition = 'opacity 0.5s ease';
+                registerButton.style.opacity = '1';
+            }, 600 + (registerFields.length * 100));
+        }, 300);
+    });
+</script>
+{% endblock %}

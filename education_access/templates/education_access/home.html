@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Education Platform{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding-bottom: 2rem;
+    }
+
+    .hero-section {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .course-image {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        border: none;
+        transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(to right, #00f2fe, #4facfe);
+    }
+</style>
+
+<!-- Hero Section -->
+<header class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Welcome to Education Platform</h1>
+        <p class="lead">Learn anytime, anywhere with our online courses.</p>
+        <a href="{% url 'courses' %}" class="btn btn-primary btn-lg">Browse All Courses</a>
+    </div>
+</header>
+
+<!-- Developers Team Section -->
+<section class="bg-primary text-white py-5 my-5 rounded">
+    <div class="container">
+        <h2 class="text-center mb-4 display-5">Developed by INNOVATIVE STARS</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card bg-white">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <h3 class="card-title text-primary mb-3">Our Development Team</h3>
+                            <div class="team-lead mb-4">
+                                <h4 class="text-dark">Team Lead</h4>
+                                <h5 class="text-primary fw-bold">Naveen Kumar S</h5>
+                            </div>
+                            <div class="team-members">
+                                <h4 class="text-dark mb-3">Team Members</h4>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="text-primary">Lakshmikanth S</h5>
+                                                <p class="text-muted">Developer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="text-primary">Tamilarasan R</h5>
+                                                <p class="text-muted">Developer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="text-primary">Pranesh S</h5>
+                                                <p class="text-muted">Developer</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-dark mb-2">Have questions or suggestions?</p>
+                            <a href="mailto:contact@educationplatform.com" class="btn btn-primary">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+{% if courses %}
+<section class="my-5">
+    <h2 class="text-center mb-4 display-5">Featured Courses</h2>
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4">
+            <div class="course-card">
+                <img src="https://via.placeholder.com/300" class="card-img-top course-image" alt="{{ course.title }}">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        {% if course.price %}
+                        <span class="fw-bold text-primary">${{ course.price }}</span>
+                        {% else %}
+                        <span class="badge bg-success">Free</span>
+                        {% endif %}
+                        
+                        {% if course.duration %}
+                        <span class="text-muted"><i class="bi bi-clock me-1"></i>{{ course.duration }}</span>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="d-grid mt-3">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">
+                                <i class="bi bi-book me-1"></i>View Details
+                            </a>
+                        {% else %}
+                            <a href="{% url 'users:login' %}" class="btn btn-outline-primary">
+                                <i class="bi bi-lock me-1"></i>Login to Access
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'courses' %}" class="btn btn-outline-primary btn-lg">View All Courses <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Education Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 6rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .hero-image {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+    }
+
+    .floating-shapes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .floating-shapes div {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border-radius: 50%;
+        animation: float 10s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .features-section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: var(--accent-gradient);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        color: white;
+        box-shadow: 0 10px 20px rgba(79, 172, 254, 0.2);
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .feature-text {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .courses-section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .course-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-image {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .course-content {
+        padding: 2rem;
+    }
+
+    .course-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .course-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .course-description {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .shape-1 {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 5%;
+        animation-delay: 0s;
+    }
+
+    .shape-2 {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        right: 10%;
+        animation-delay: 2s;
+    }
+
+    .shape-3 {
+        width: 70px;
+        height: 70px;
+        bottom: 20%;
+        left: 15%;
+        animation-delay: 4s;
+    }
+
+    .shape-4 {
+        width: 120px;
+        height: 120px;
+        top: 30%;
+        right: 20%;
+        animation-delay: 6s;
+    }
+
+    /* Team Section Styles */
+    .team-section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .team-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        padding: 5px;
+        background: var(--accent-gradient);
+    }
+
+    .team-image img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+    }
+
+    .team-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .team-role {
+        color: #e73c7e;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .team-description {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--accent-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        transform: translateY(-3px);
+        color: white;
+        box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Floating Shapes -->
+<div class="floating-shapes">
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+    <div class="shape-3"></div>
+    <div class="shape-4"></div>
+</div>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title">Transform Your Future with Online Learning</h1>
+                <p class="hero-subtitle">Access world-class education from anywhere in the world. Learn at your own pace and achieve your goals.</p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'courses' %}" class="btn btn-gradient btn-lg">
+                        <i class="fas fa-book me-2"></i>Explore Courses
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'users:register' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Join Now
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 hero-image">
+                <img src="https://source.unsplash.com/random/600x400/?education,learning,students" alt="Education Platform" class="img-fluid rounded-4 shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title mb-5">Why Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Instructors</h3>
+                    <p class="feature-text">Learn from industry professionals and experienced educators who are passionate about teaching.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="feature-title">Flexible Learning</h3>
+                    <p class="feature-text">Study at your own pace with our comprehensive online courses and interactive learning materials.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="feature-title">Certified Courses</h3>
+                    <p class="feature-text">Earn recognized certificates upon completion to boost your career prospects.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses Section -->
+<section class="courses-section">
+    <div class="container">
+        <h2 class="section-title mb-5">Featured Courses</h2>
+        <div class="row g-4">
+            {% for course in courses %}
+            <div class="col-md-4">
+                <div class="course-card">
+                    <img src="https://source.unsplash.com/random/400x300/?{{ course.title|urlencode }}" alt="{{ course.title }}" class="course-image w-100">
+                    <div class="course-content">
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <div class="course-meta">
+                            <span><i class="fas fa-user me-2"></i>{{ course.instructor }}</span>
+                            <span><i class="fas fa-clock me-2"></i>{{ course.duration }} weeks</span>
+                        </div>
+                        <p class="course-description">{{ course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-gradient w-100">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <h2 class="section-title mb-5">Developed By: INNOVATIVE STARS</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="https://source.unsplash.com/random/300x300/?leader" alt="Team Lead">
+                    </div>
+                    <h3 class="team-name">Naveen Kumar S</h3>
+                    <div class="team-role">Team Lead</div>
+                    <p class="team-description">Leading the development of innovative educational solutions with expertise in project management and team coordination.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="https://source.unsplash.com/random/300x300/?developer" alt="Developer">
+                    </div>
+                    <h3 class="team-name">Lakshmikanth S</h3>
+                    <div class="team-role">Developer</div>
+                    <p class="team-description">Full-stack developer specializing in Python, Django, and modern web technologies.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="https://source.unsplash.com/random/300x300/?programmer" alt="Developer">
+                    </div>
+                    <h3 class="team-name">Tamilarasan R</h3>
+                    <div class="team-role">Developer</div>
+                    <p class="team-description">Backend developer with expertise in database management and system architecture.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="https://source.unsplash.com/random/300x300/?coder" alt="Developer">
+                    </div>
+                    <h3 class="team-name">Pranesh S</h3>
+                    <div class="team-role">Developer</div>
+                    <p class="team-description">Frontend specialist focusing on creating intuitive and responsive user interfaces.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

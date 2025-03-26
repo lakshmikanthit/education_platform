@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block title %}User Profile{% endblock %} {% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>User Profile</h2>
+                </div>
+                <div class="card-body">
+                    <h3>{{ user.username }}</h3>
+                    <p>Email: {{ user.email }}</p>
+                    <p>Joined: {{ user.date_joined|date:"F d, Y" }}</p>
+
+                    <div class="mt-4">
+                        <h4>My Enrolled Courses</h4>
+                        {% if enrollments %}
+                        <div class="list-group">
+                            {% for enrollment in enrollments %}
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ enrollment.course.title }}</h5>
+                                    <small>Enrolled: {{ enrollment.enrolled_at|date:"M d, Y" }}</small>
+                                </div>
+                                <p class="mb-1">{{ enrollment.course.description|truncatewords:20 }}</p>
+                                <a href="{% url 'course_detail' enrollment.course.id %}" class="btn btn-sm btn-primary mt-2">Go to Course</a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            You are not enrolled in any courses yet.
+                            <a href="{% url 'courses' %}" class="alert-link">Browse available courses</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
