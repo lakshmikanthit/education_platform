@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - Course Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ course.title }}</h2>
+    <p><strong>Instructor:</strong> {{ course.instructor }}</p>
+    <p><strong>Description:</strong> {{ course.description }}</p>
+    <p><strong>Duration:</strong> {{ course.duration }} weeks</p>
+
+    <a href="#" class="btn btn-primary">Enroll Now</a>
+</div>
+{% endblock %}

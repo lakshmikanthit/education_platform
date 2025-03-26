@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block extra_css %}
+<style>
+    .register-section {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+        background: var(--primary-gradient);
+    }
+
+    .register-shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .shape-1 {
+        width: 500px;
+        height: 500px;
+        top: -250px;
+        right: -250px;
+        transform: rotate(45deg);
+    }
+
+    .shape-2 {
+        width: 400px;
+        height: 400px;
+        bottom: -200px;
+        left: -200px;
+        transform: rotate(-45deg);
+    }
+
+    .register-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        border: none;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .register-header {
+        background: var(--accent-gradient);
+        padding: 2rem;
+        text-align: center;
+        color: white;
+    }
+
+    .register-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .register-subtitle {
+        opacity: 0.9;
+    }
+
+    .register-body {
+        padding: 2.5rem;
+    }
+
+    .form-floating {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        border-color: #6B73FF;
+        box-shadow: 0 0 0 0.25rem rgba(107, 115, 255, 0.1);
+    }
+
+    .form-label {
+        color: var(--text-secondary);
+    }
+
+    .btn-register {
+        background: var(--accent-gradient);
+        border: none;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 1rem;
+        transition: var(--transition);
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    .login-link a {
+        color: #6B73FF;
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .login-link a:hover {
+        color: #000DFF;
+    }
+
+    .benefits {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: rgba(107, 115, 255, 0.05);
+        border-radius: 10px;
+        transition: var(--transition);
+    }
+
+    .benefit-item:hover {
+        transform: translateX(5px);
+        background: rgba(107, 115, 255, 0.1);
+    }
+
+    .benefit-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--accent-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: white;
+    }
+
+    .benefit-text {
+        flex: 1;
+    }
+
+    .benefit-text h5 {
+        margin: 0;
+        color: var(--text-primary);
+    }
+
+    .benefit-text p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="register-section">
+    <div class="register-shape shape-1"></div>
+    <div class="register-shape shape-2"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="register-card">
+                    <div class="register-header">
+                        <h1 class="register-title">Create Your Account</h1>
+                        <p class="register-subtitle mb-0">Join our learning community today</p>
+                    </div>
+                    <div class="register-body">
+                        <div class="row">
+                            <div class="col-md-7 border-end">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                                        <label for="username">Username</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                        <label for="email">Email</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required>
+                                        <label for="password1">Password</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password" required>
+                                        <label for="password2">Confirm Password</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-register">
+                                        <i class="fas fa-user-plus me-2"></i> Create Account
+                                    </button>
+                                </form>
+
+                                <div class="login-link">
+                                    Already have an account? <a href="{% url 'users:login' %}">Sign in here</a>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="benefits">
+                                    <h4 class="text-center mb-4">Benefits of Joining</h4>
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <div class="benefit-text">
+                                            <h5>Access All Courses</h5>
+                                            <p>Learn from our extensive library of courses</p>
+                                        </div>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-certificate"></i>
+                                        </div>
+                                        <div class="benefit-text">
+                                            <h5>Earn Certificates</h5>
+                                            <p>Get recognized for your achievements</p>
+                                        </div>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div class="benefit-text">
+                                            <h5>Join Community</h5>
+                                            <p>Connect with fellow learners</p>
+                                        </div>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="benefit-text">
+                                            <h5>Learn at Your Pace</h5>
+                                            <p>Flexible learning schedule</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

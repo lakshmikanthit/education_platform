@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-section {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+        background: var(--primary-gradient);
+    }
+
+    .login-shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .shape-1 {
+        width: 500px;
+        height: 500px;
+        top: -250px;
+        right: -250px;
+        transform: rotate(45deg);
+    }
+
+    .shape-2 {
+        width: 400px;
+        height: 400px;
+        bottom: -200px;
+        left: -200px;
+        transform: rotate(-45deg);
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        border: none;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .login-header {
+        background: var(--accent-gradient);
+        padding: 2rem;
+        text-align: center;
+        color: white;
+    }
+
+    .login-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+        opacity: 0.9;
+    }
+
+    .login-body {
+        padding: 2.5rem;
+    }
+
+    .form-floating {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        transition: var(--transition);
+    }
+
+    .form-control:focus {
+        border-color: #6B73FF;
+        box-shadow: 0 0 0 0.25rem rgba(107, 115, 255, 0.1);
+    }
+
+    .form-label {
+        color: var(--text-secondary);
+    }
+
+    .btn-login {
+        background: var(--accent-gradient);
+        border: none;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 1rem;
+        transition: var(--transition);
+    }
+
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .register-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    .register-link a {
+        color: #6B73FF;
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .register-link a:hover {
+        color: #000DFF;
+    }
+
+    .social-login {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .social-title {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .social-title::before,
+    .social-title::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 45%;
+        height: 1px;
+        background: #e0e0e0;
+    }
+
+    .social-title::before {
+        left: 0;
+    }
+
+    .social-title::after {
+        right: 0;
+    }
+
+    .social-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .social-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: var(--transition);
+        border: none;
+    }
+
+    .social-btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .social-btn.google {
+        background: #DB4437;
+    }
+
+    .social-btn.facebook {
+        background: #4267B2;
+    }
+
+    .social-btn.twitter {
+        background: #1DA1F2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="login-section">
+    <div class="login-shape shape-1"></div>
+    <div class="login-shape shape-2"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h1 class="login-title">Welcome Back</h1>
+                        <p class="login-subtitle mb-0">Sign in to continue your learning journey</p>
+                    </div>
+                    <div class="login-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                <label for="password">Password</label>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                    <label class="form-check-label" for="remember">Remember me</label>
+                                </div>
+                                <a href="#" class="text-decoration-none">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-login">
+                                <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                            </button>
+                        </form>
+
+                        <div class="register-link">
+                            Don't have an account? <a href="{% url 'users:register' %}">Sign up here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

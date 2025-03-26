@@ -1,0 +1,406 @@
+{% extends 'base.html' %}
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding-bottom: 2rem;
+    }
+    
+    /* Floating shapes background */
+    .bg-shapes {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        overflow: hidden;
+    }
+    
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        animation: float 15s infinite ease-in-out;
+    }
+    
+    .shape:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .shape:nth-child(2) {
+        width: 120px;
+        height: 120px;
+        top: 20%;
+        left: 80%;
+        animation-delay: 2s;
+        background: rgba(135, 206, 250, 0.2);
+    }
+    
+    .shape:nth-child(3) {
+        width: 60px;
+        height: 60px;
+        top: 60%;
+        left: 20%;
+        animation-delay: 4s;
+        background: rgba(70, 130, 180, 0.2);
+    }
+    
+    .shape:nth-child(4) {
+        width: 100px;
+        height: 100px;
+        top: 80%;
+        left: 70%;
+        animation-delay: 6s;
+        background: rgba(100, 149, 237, 0.2);
+    }
+    
+    @keyframes float {
+        0% {
+            transform: translatey(0) translatex(0);
+        }
+        25% {
+            transform: translatey(-20px) translatex(10px);
+        }
+        50% {
+            transform: translatey(0) translatex(20px);
+        }
+        75% {
+            transform: translatey(20px) translatex(10px);
+        }
+        100% {
+            transform: translatey(0) translatex(0);
+        }
+    }
+    
+    .course-header {
+        background: linear-gradient(to right, #536976, #292E49);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(41, 46, 73, 0.2);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+    
+    .course-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.1;
+    }
+    
+    .breadcrumb {
+        background-color: transparent;
+        padding: 1rem 0;
+    }
+    
+    .breadcrumb-item a {
+        color: #536976;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #292E49;
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: #292E49;
+        font-weight: 600;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        color: #536976;
+    }
+    
+    .course-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .course-title::after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+        bottom: -10px;
+        left: 0;
+        border-radius: 4px;
+    }
+    
+    .course-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        background: white;
+        margin-bottom: 2rem;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .section-title {
+        color: #292E49;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        bottom: -8px;
+        left: 0;
+        border-radius: 3px;
+    }
+    
+    .list-group-item {
+        border: none;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+    
+    .list-group-item strong {
+        color: #292E49;
+        margin-right: 10px;
+    }
+    
+    .enrollment-card {
+        border: none;
+        border-radius: 15px;
+        background: white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 20px;
+    }
+    
+    .enrollment-card .card-body {
+        padding: 2rem;
+    }
+    
+    .enrollment-card .card-title {
+        color: #292E49;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .enrollment-card .card-text {
+        color: #555;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn-enroll {
+        background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+        border: none;
+        padding: 12px 0;
+        border-radius: 30px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        transition: all 0.3s;
+    }
+    
+    .btn-enroll:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+        background: linear-gradient(to right, #00f2fe 0%, #4facfe 100%);
+    }
+    
+    .feature-icon {
+        height: 60px;
+        width: 60px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        transition: all 0.3s;
+    }
+    
+    .feature-icon i {
+        font-size: 24px;
+        color: #292E49;
+    }
+    
+    .feature-box:hover .feature-icon {
+        transform: scale(1.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-title {
+        font-weight: 600;
+        color: #292E49;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-text {
+        color: #666;
+        font-size: 0.95rem;
+    }
+    
+    .course-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="bg-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'courses' %}">Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="course-header">
+        <h1 class="course-title">{{ course.title }}</h1>
+        <p class="text-white-50 mb-0">Learn with {{ course.instructor }} | {{ course.duration }} weeks</p>
+        </div>
+
+            <div class="row">
+                <div class="col-md-8">
+            <img src="https://source.unsplash.com/random/800x600/?{{ course.title|urlencode }}" class="course-image" alt="{{ course.title }}">
+            
+            <div class="course-card">
+                <div class="card-body p-4">
+                    <h4 class="section-title">About this course</h4>
+                    <p>{{ course.description }}</p>
+
+                    <div class="row mt-5 mb-4">
+                        <div class="col-md-4 text-center feature-box">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h5 class="feature-title">Duration</h5>
+                            <p class="feature-text">{{ course.duration }} weeks</p>
+                        </div>
+                        <div class="col-md-4 text-center feature-box">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h5 class="feature-title">Instructor</h5>
+                            <p class="feature-text">{{ course.instructor }}</p>
+                        </div>
+                        <div class="col-md-4 text-center feature-box">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h5 class="feature-title">Students</h5>
+                            <p class="feature-text">Join our community</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="section-title mt-4">What you'll learn</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Comprehensive understanding of {{ course.title }}</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Practical skills and experience</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Industry best practices</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Professional techniques</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Real-world applications</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Certificate upon completion</li>
+                    </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+                <div class="col-md-4">
+            <div class="enrollment-card">
+                        <div class="card-body">
+                    <h5 class="card-title">Ready to start learning?</h5>
+                    <p class="card-text">Enroll now to get access to all course materials, assignments, and instructor support!</p>
+                    
+                    {% if is_enrolled %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i> You are enrolled in this course
+                        </div>
+                        <a href="#" class="btn btn-primary btn-lg w-100">Go to Course Dashboard</a>
+                    {% else %}
+                            <form method="post" action="{% url 'enroll' course.id %}">
+                                {% csrf_token %}
+                            <button type="submit" class="btn btn-enroll btn-lg w-100">
+                                <i class="fas fa-graduation-cap me-2"></i> Enroll Now
+                            </button>
+                            </form>
+                    {% endif %}
+                    
+                    <div class="mt-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-play-circle me-3" style="color: #4facfe; font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-0">Video Lessons</h6>
+                                <small class="text-muted">Learn at your own pace</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-file-alt me-3" style="color: #4facfe; font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-0">Course Materials</h6>
+                                <small class="text-muted">Downloadable resources</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-certificate me-3" style="color: #4facfe; font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-0">Certificate</h6>
+                                <small class="text-muted">Upon completion</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

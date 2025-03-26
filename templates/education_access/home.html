@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Education Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: var(--primary-gradient);
+        padding: 6rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-text {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+    }
+
+    .hero-shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .shape-1 {
+        width: 300px;
+        height: 300px;
+        top: -100px;
+        right: -100px;
+    }
+
+    .shape-2 {
+        width: 200px;
+        height: 200px;
+        bottom: -50px;
+        left: -50px;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--primary-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+
+    .feature-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .course-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        height: 100%;
+        background: white;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .course-image {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .course-content {
+        padding: 1.5rem;
+    }
+
+    .course-badge {
+        background: var(--accent-gradient);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .instructor {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .courses-section {
+        background: #f8fafc;
+        padding: 6rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .courses-shape {
+        position: absolute;
+        background: linear-gradient(135deg, var(--primary-gradient));
+        opacity: 0.1;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+    .shape-3 {
+        width: 400px;
+        height: 400px;
+        top: -200px;
+        right: -200px;
+        transform: rotate(45deg);
+    }
+
+    .shape-4 {
+        width: 300px;
+        height: 300px;
+        bottom: -150px;
+        left: -150px;
+        transform: rotate(-45deg);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-shape shape-1"></div>
+    <div class="hero-shape shape-2"></div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title">Transform Your Future with Online Learning</h1>
+                <p class="hero-text">Discover a world of knowledge with our expert-led courses. Start your learning journey today!</p>
+                <a href="{% url 'courses' %}" class="btn btn-light btn-lg rounded-pill px-4">
+                    Explore Courses <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="https://source.unsplash.com/random/600x400/?education" alt="Education" class="img-fluid rounded-4">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title">Why Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Learn Anywhere</h3>
+                    <p class="text-muted">Access your courses anytime, anywhere. Learn at your own pace with our flexible platform.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Get Certified</h3>
+                    <p class="text-muted">Earn certificates upon completion and showcase your achievements to potential employers.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Expert Instructors</h3>
+                    <p class="text-muted">Learn from industry experts who bring real-world experience to your education.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses -->
+<section class="courses-section">
+    <div class="courses-shape shape-3"></div>
+    <div class="courses-shape shape-4"></div>
+    <div class="container">
+        <h2 class="section-title">Featured Courses</h2>
+        <div class="row g-4">
+            {% for course in courses|slice:":3" %}
+            <div class="col-md-4">
+                <div class="course-card">
+                    <img src="https://source.unsplash.com/random/400x300/?{{ course.title|urlencode }}" 
+                         class="course-image w-100" alt="{{ course.title }}">
+                    <div class="course-content">
+                        <span class="course-badge mb-3 d-inline-block">{{ course.duration }} weeks</span>
+                        <h4>{{ course.title }}</h4>
+                        <p class="text-muted">{{ course.description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="instructor">
+                                <i class="fas fa-user-tie me-2"></i>
+                                {{ course.instructor }}
+                            </div>
+                            <a href="{% url 'course_detail' course.id %}" class="btn btn-gradient">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if courses %}
+        <div class="text-center mt-5">
+            <a href="{% url 'courses' %}" class="btn btn-gradient btn-lg">
+                View All Courses <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
