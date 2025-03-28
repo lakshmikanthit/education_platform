@@ -1,4 +1,4 @@
-# Education Platform
+ # Education Platform
 
 A modern educational platform built with Django that enables online learning and course management.
 
